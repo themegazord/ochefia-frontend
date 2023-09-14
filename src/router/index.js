@@ -28,19 +28,35 @@ const router = createRouter({
     {
       path: '/dashboard',
       name: 'dashboard',
+      meta: { requiresAuth: true },
       component: DashboardView
     },
     {
-      path: '/estoque/grupo/listagem',
-      name: 'estoque.grupo.listagem',
-      component: ListagemGrupoView
-    },
-    {
-      path: '/estoque/grupo/cadastro',
-      name: 'estoque.grupo.cadastro',
-      component: CadastroGrupoView
+      path: '/estoque',
+      name: 'estoque',
+      meta: { requiresAuth: true },
+      children: [
+        {
+          path: 'grupo/listagem',
+          name: 'estoque.grupo.listagem',
+          component: ListagemGrupoView
+        },
+        {
+          path: 'grupo/cadastro',
+          name: 'estoque.grupo.cadastro',
+          component: CadastroGrupoView
+        }
+      ]
     }
   ]
+})
+
+router.beforeEach((to, from, next) => {
+  if (to.matched.some(route => route.meta.requiresAuth) && !(localStorage.getItem('token') || sessionStorage.getItem('token'))) {
+    next('/login')
+  } else {
+    next()
+  }
 })
 
 export default router
