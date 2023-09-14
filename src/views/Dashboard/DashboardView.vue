@@ -1,6 +1,7 @@
 <template>
   <v-layout>
     <NavbarSistemaComponent :menus="menus" :subMenus="subMenus"/>
+    <v-app-bar class="pl-6">Dashboard</v-app-bar>
     <v-main>
       <h1>Dashboard</h1>
     </v-main>
