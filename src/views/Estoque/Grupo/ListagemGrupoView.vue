@@ -25,7 +25,10 @@
               <td>{{ grupo.grupo_produto_id }}</td>
               <td>{{ grupo.grupo_produto_nome }}</td>
               <td>{{ grupo.grupo_produto_tipo }}</td>
-              <td></td>
+              <td class="acoes">
+                <v-btn density="compact" icon="fas fa-magic" variant="flat"></v-btn>
+                <v-btn density="compact" icon="fas fa-trash" variant="flat"></v-btn>
+              </td>
             </tr>
           </tbody>
         </v-table>
@@ -85,6 +88,11 @@ export default {
 
 .criar {
   color: var(--green-confirm);
+}
+
+.acoes {
+  display: flex;
+  gap: .5rem;
 }
 
 </style>
