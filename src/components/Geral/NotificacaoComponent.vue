@@ -63,6 +63,7 @@ export default {
     flex-direction: column;
     gap: 1rem;
     width: 20%;
+    z-index: 10000;
 }
 .notificacao {
     width: 90%;
