@@ -159,7 +159,7 @@
           <v-col cols="6">
             <v-file-input
               accept="image/png, image/jpg, image/jpeg"
-              prepend-icon="mdi-paperclip"
+              prepend-icon="fas fa-paperclip"
               label="Caso tenha, insira o logo da sua empresa"
               :disabled="escolhamodalidade == 'cliente'"
               v-model="empresa.logo"
