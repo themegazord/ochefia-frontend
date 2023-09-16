@@ -5,6 +5,7 @@ import CadastroView from "../views/Autenticacao/CadastroView.vue"
 import DashboardView from "../views/Dashboard/DashboardView.vue"
 import ListagemGrupoView from "../views/Estoque/Grupo/ListagemGrupoView.vue"
 import CadastroGrupoView from "../views/Estoque/Grupo/CadastroGrupoView.vue"
+import EdicaoGrupoView from "../views/Estoque/Grupo/EdicaoGrupoView.vue"
 import LoginView from "../views/Autenticacao/LoginView.vue"
 
 const router = createRouter({
@@ -45,6 +46,11 @@ const router = createRouter({
           path: 'grupo/cadastro',
           name: 'estoque.grupo.cadastro',
           component: CadastroGrupoView
+        },
+        {
+          path: 'grupo/edicao/:id',
+          name: 'estoque.grupo.edicao',
+          component: EdicaoGrupoView
         }
       ]
     }
