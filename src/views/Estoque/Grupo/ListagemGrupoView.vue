@@ -26,7 +26,7 @@
               <td>{{ grupo.grupo_produto_nome }}</td>
               <td>{{ grupo.grupo_produto_tipo }}</td>
               <td class="acoes">
-                <v-btn density="compact" icon="fas fa-magic" variant="flat"></v-btn>
+                <v-btn density="compact" icon="fas fa-magic" variant="flat" @click="$router.push({ path: `edicao/${grupo.grupo_produto_id}` })"></v-btn>
                 <v-btn density="compact" icon="fas fa-trash" variant="flat"></v-btn>
               </td>
             </tr>
