@@ -1,12 +1,15 @@
 <template>
   <v-layout>
-    <NavbarSistemaComponent :menus="menus" :subMenus="subMenus"/>
+    <NavbarSistemaComponent :menus="menus" :subMenus="subMenus" />
+    <NotificacaoComponent />
+    <LoadingComponent :loading="loading" />
     <v-app-bar class="pl-6">Estoque</v-app-bar>
     <v-main>
       <div class="container-listagem-grupos">
         <h2>Aqui, você vai ver seus grupos cadastrados e poderá editá-los, excluí-los ou criar novos grupos.</h2>
         <div class="container-cadastro-grupo">
-          <v-btn prepend-icon="fas fa-plus" class="criar" variant="tonal" @click="$router.push({ path: 'cadastro' })">Criar</v-btn>
+          <v-btn prepend-icon="fas fa-plus" class="criar" variant="tonal"
+            @click="$router.push({ path: 'cadastro' })">Criar</v-btn>
         </div>
         <v-table density="compact" fixed-header height="400" v-if="grupos.length != 0" class="">
           <thead>
@@ -18,16 +21,32 @@
             </tr>
           </thead>
           <tbody>
-            <tr
-              v-for="grupo in grupos"
-              :key="grupo.grupo_produto_id"
-            >
+            <tr v-for="grupo in grupos" :key="grupo.grupo_produto_id">
               <td>{{ grupo.grupo_produto_id }}</td>
               <td>{{ grupo.grupo_produto_nome }}</td>
               <td>{{ grupo.grupo_produto_tipo }}</td>
               <td class="acoes">
-                <v-btn density="compact" icon="fas fa-magic" variant="flat" @click="$router.push({ path: `edicao/${grupo.grupo_produto_id}` })"></v-btn>
-                <v-btn density="compact" icon="fas fa-trash" variant="flat"></v-btn>
+                <v-btn density="compact" icon="fas fa-magic" variant="flat"
+                  @click="$router.push({ path: `edicao/${grupo.grupo_produto_id}` })"></v-btn>
+                <v-dialog width="500">
+                  <template v-slot:activator="{ props }">
+                    <v-btn density="compact" icon="fas fa-trash" variant="flat" v-bind="props"></v-btn>
+                  </template>
+
+                  <template v-slot:default="{ isActive }">
+                    <v-card title="Remoção de grupo de produto">
+                      <v-card-text>
+                        Você deseja remover este grupo de produto?
+                      </v-card-text>
+                      <v-card-actions>
+                        <v-spacer></v-spacer>
+                        <v-btn text="Cancelar" @click="isActive.value = false"></v-btn>
+                        <v-btn text="Remover" @click="remocaoGrupoProduto(grupo.grupo_produto_id)" variant="flat"
+                          prepend-icon="fas fa-trash"></v-btn>
+                      </v-card-actions>
+                    </v-card>
+                  </template>
+                </v-dialog>
               </td>
             </tr>
           </tbody>
@@ -41,16 +60,23 @@
 <script>
 import { useNavbarSistemaLinksStore } from '../../../stores/navbarSistemaLinks'
 import NavbarSistemaComponent from '../../../components/Navbar/NavbarSistemaComponent.vue'
+import NotificacaoComponent from '../../../components/Geral/NotificacaoComponent.vue'
+import LoadingComponent from '../../../components/Geral/LoadingComponent.vue'
 import axios from 'axios'
 import { useEndpoints } from '../../../stores/endpoints'
+import { mapActions } from 'pinia'
+import { useNotificacoes } from '../../../stores/notificacao'
 export default {
   components: {
-    NavbarSistemaComponent
+    NavbarSistemaComponent,
+    NotificacaoComponent,
+    LoadingComponent
   },
   data() {
     return {
       menus: useNavbarSistemaLinksStore().getMenus,
       subMenus: useNavbarSistemaLinksStore().getSubMenus,
+      loading: false,
       grupos: []
     }
   },
@@ -68,12 +94,38 @@ export default {
       .catch((erro) => {
         console.log(erro)
       })
+  },
+  methods: {
+    remocaoGrupoProduto(id) {
+      this.loading = true
+      axios
+        .delete(`${useEndpoints().getRemocaoGrupoProduto}${id}`, {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem('token') || sessionStorage.getItem('token')}`
+          }
+        })
+        .then((res) => {
+          if (res.status == 204) {
+            this.loading = false
+            this.setNotificacoes('Grupo removido com sucesso', 'Remoção de grupo', 'sucesso')
+            setTimeout(() => {
+              this.$router.go()
+            }, 3000)
+          }
+        })
+        .catch((err) => {
+          if (err.response.data.erro) {
+            this.loading = false
+            this.setNotificacoes(err.response.data.erro, 'Erro', 'erro')
+          }
+        })
+    },
+    ...mapActions(useNotificacoes, ['setNotificacoes', 'dispatchNotificacoes'])
   }
 }
 </script>
 
 <style scoped>
-
 .container-listagem-grupos {
   padding: 4rem;
   font-family: 'Poppins', sans-serif;
@@ -94,5 +146,4 @@ export default {
   display: flex;
   gap: .5rem;
 }
-
 </style>
