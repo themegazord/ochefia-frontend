@@ -22,7 +22,8 @@ export const useEndpoints = defineStore('endpoints', {
       grupo: {
         cadastro: `${servidor}/api/v1/grupo_produto/cadastro`,
         listagem: `${servidor}/api/v1/grupo_produto/listagem`,
-        grupoPorId: `${servidor}/api/v1/grupo_produto/grupo/`
+        grupoPorId: `${servidor}/api/v1/grupo_produto/grupo/`,
+        edicao: `${servidor}/api/v1/grupo_produto/grupo/`,
       }
     }
   }),
@@ -34,5 +35,6 @@ export const useEndpoints = defineStore('endpoints', {
     getCadastroGrupoProduto: (state) => state.estoque.grupo.cadastro,
     getListagemGrupoProduto: (state) => state.estoque.grupo.listagem,
     getGrupoPorIdGrupoProduto: (state) => state.estoque.grupo.grupoPorId,
+    getEdicaoGrupoProduto: (state) => state.estoque.grupo.edicao,
   }
 })
