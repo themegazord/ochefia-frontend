@@ -16,6 +16,7 @@
                 :error-messages="v$.grupo.grupo_produto_nome.$errors.map((e) => e.$message)"
                 counter="30"
                 label="Insira o nome do grupo"
+                :disabled="naoExiste"
                 @input="v$.grupo.grupo_produto_nome.$touch"
                 @blur="v$.grupo.grupo_produto_nome.$touch"
               ></v-text-field
@@ -26,14 +27,14 @@
                 item-title="tipo"
                 item-value="tipo_abbr"
                 label="Insira o tipo do grupo"
-                
+                :disabled="naoExiste"
                 v-model="grupo.grupo_produto_tipo"
               ></v-select
             ></v-col>
           </v-row>
           <v-row>
             <v-col cols="12">
-              <v-btn variant="tonal" class="color: var(--green-confirm) ; float-right" type="submit"
+              <v-btn variant="tonal" class="color: var(--green-confirm) ; float-right" type="submit" :disabled="naoExiste"
                 >Salvar</v-btn
               >
             </v-col>
@@ -97,7 +98,8 @@ export default {
         grupo_produto_id: '',
         grupo_produto_nome: '',
         grupo_produto_tipo: ''
-      }
+      },
+      naoExiste: false
     }
   },
   mounted() {
@@ -110,12 +112,17 @@ export default {
         }
       })
       .then((res) => {
-        this.grupo = {...res.data.grupo}
+        this.grupo = {
+          grupo_produto_id: res.data.grupo.grupo_produto_id,
+          grupo_produto_nome: res.data.grupo.grupo_produto_nome,
+          grupo_produto_tipo: this.tipos.find(t => t.tipo === res.data.grupo.grupo_produto_tipo).tipo_abbr
+        }
         this.loading = false
       })
       .catch((err) => {
-        console.log(err)
         this.loading = false
+        this.naoExiste = true
+        this.setNotificacoes(err.response.data.erro, 'Erro', 'erro')
       })
   },
   methods: {
@@ -124,7 +131,10 @@ export default {
       if (await this.v$.grupo.$validate()) {
         this.loading = true
         axios
-          .post(useEndpoints().getCadastroGrupoProduto, this.grupo, {
+          .put(`${useEndpoints().getEdicaoGrupoProduto}${this.grupo.grupo_produto_id}`, {
+            grupo_produto_nome: this.grupo.grupo_produto_nome,
+            grupo_produto_tipo: this.grupo.grupo_produto_tipo
+          }, {
             headers: {
               Authorization: `Bearer ${
                 localStorage.getItem('token') || sessionStorage.getItem('token')
@@ -141,6 +151,7 @@ export default {
             this.loading = false
           })
           .catch((erro) => {
+            console.log(erro)
             if (erro.response.data.errors) {
               const erros = Object.entries(erro.response.data.errors)
               for (const [chave, valor] of erros) {
@@ -159,7 +170,7 @@ export default {
                     )
                 }
               }
-            } else if (erro.response.data.erro) {
+            } else if (erro.response.data.erro) {  
               this.setNotificacoes(erro.response.data.erro, 'Erro', 'erro')
             }
             this.loading = false
