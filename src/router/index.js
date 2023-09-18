@@ -2,12 +2,14 @@ import { createRouter, createWebHistory } from 'vue-router'
 
 import HomeView from "../views/Home/HomeView.vue"
 import CadastroView from "../views/Autenticacao/CadastroView.vue"
+import LoginView from "../views/Autenticacao/LoginView.vue"
 import DashboardView from "../views/Dashboard/DashboardView.vue"
 import ListagemGrupoView from "../views/Estoque/Grupo/ListagemGrupoView.vue"
 import CadastroGrupoView from "../views/Estoque/Grupo/CadastroGrupoView.vue"
 import EdicaoGrupoView from "../views/Estoque/Grupo/EdicaoGrupoView.vue"
-import LoginView from "../views/Autenticacao/LoginView.vue"
 import ListagemSubGrupoView from "../views/Estoque/SubGrupo/ListagemSubGrupoView.vue"
+import CadastroSubGrupoView from "../views/Estoque/SubGrupo/CadastroSubGrupoView.vue"
+
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -61,6 +63,11 @@ const router = createRouter({
               path: 'listagem',
               name: 'subgrupo.listagem',
               component: ListagemSubGrupoView
+            },
+            {
+              path: 'cadastro',
+              name: 'subgrupo.cadastro',
+              component: CadastroSubGrupoView
             }
           ]
         }
