@@ -6,8 +6,8 @@
     <LoadingComponent :loading="loading" />
     <v-main>
       <div class="container-cadastro-subgrupo">
-        <h2>Aqui você poderá cadastrar novos grupos de produtos!</h2>
-        <form class="form-cadastro-subgrupo" @submit.prevent="cadastrar">
+        <h2>Aqui você poderá editar seus sub grupos de produtos!</h2>
+        <form class="form-cadastro-subgrupo" @submit.prevent="editar">
           <v-row>
             <v-col cols="6">
               <v-text-field
@@ -88,20 +88,21 @@ export default {
   },
   methods: {
     ...mapActions(useNotificacoes, ['setNotificacoes']),
-    async cadastrar() {
+    async editar() {
       if (await this.v$.subgrupo.$validate()) {
         this.loading = true
         axios
-          .post(useEndpoints().getCadastroSubGrupoProduto, this.subgrupo, {
+          .put(`${useEndpoints().getEdicaoSubGrupoProduto}${this.$route.params.id}`, {
+            sub_grupo_produto_nome: this.subgrupo.sub_grupo_produto_nome
+          }, {
             headers: {
               Accept: 'application/json',
               Authorization: useEndpoints().getToken
             }
           })
           .then((res) => {
-            console.log(res)
             this.setNotificacoes(
-              `${res.data.mensagem} -> ${res.data.sub_grupo.sub_grupo_produto_nome}`,
+              `${res.data.mensagem} -> ${this.subgrupo.sub_grupo_produto_nome}`,
               'Sucesso',
               'sucesso'
             )
