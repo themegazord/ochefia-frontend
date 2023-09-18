@@ -56,7 +56,7 @@ export const useNavbarSistemaLinksStore = defineStore('linksSistema', {
             icon: ''
           },
           subGrupo: {
-            url: '/estoque/subgrupo',
+            url: '/estoque/subgrupo/listagem',
             label: 'Sub Grupo',
             icon: ''
           },
