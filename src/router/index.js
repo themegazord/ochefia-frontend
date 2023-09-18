@@ -7,6 +7,7 @@ import ListagemGrupoView from "../views/Estoque/Grupo/ListagemGrupoView.vue"
 import CadastroGrupoView from "../views/Estoque/Grupo/CadastroGrupoView.vue"
 import EdicaoGrupoView from "../views/Estoque/Grupo/EdicaoGrupoView.vue"
 import LoginView from "../views/Autenticacao/LoginView.vue"
+import ListagemSubGrupoView from "../views/Estoque/SubGrupo/ListagemSubGrupoView.vue"
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -51,6 +52,17 @@ const router = createRouter({
           path: 'grupo/edicao/:id',
           name: 'estoque.grupo.edicao',
           component: EdicaoGrupoView
+        },
+        {
+          path: 'subgrupo',
+          name: 'subgrupo',
+          children: [
+            {
+              path: 'listagem',
+              name: 'subgrupo.listagem',
+              component: ListagemSubGrupoView
+            }
+          ]
         }
       ]
     }
