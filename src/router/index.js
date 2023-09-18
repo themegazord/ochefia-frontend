@@ -9,6 +9,7 @@ import CadastroGrupoView from "../views/Estoque/Grupo/CadastroGrupoView.vue"
 import EdicaoGrupoView from "../views/Estoque/Grupo/EdicaoGrupoView.vue"
 import ListagemSubGrupoView from "../views/Estoque/SubGrupo/ListagemSubGrupoView.vue"
 import CadastroSubGrupoView from "../views/Estoque/SubGrupo/CadastroSubGrupoView.vue"
+import EdicaoSubGrupoView from "../views/Estoque/SubGrupo/EdicaoSubGrupoView.vue"
 
 
 const router = createRouter({
@@ -68,6 +69,11 @@ const router = createRouter({
               path: 'cadastro',
               name: 'subgrupo.cadastro',
               component: CadastroSubGrupoView
+            },
+            {
+              path: 'edicao/:id',
+              name: 'estoque.subgrupo.edicao',
+              component: EdicaoSubGrupoView
             }
           ]
         }
