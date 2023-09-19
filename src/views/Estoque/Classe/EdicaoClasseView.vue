@@ -1,5 +1,5 @@
 <template>
-    <v-layout>
+  <v-layout>
     <NavbarSistemaComponent :menus="menus" :subMenus="subMenus" />
     <NotificacaoComponent />
     <v-app-bar class="pl-6">Estoque</v-app-bar>
@@ -24,8 +24,21 @@
             <v-col cols="6"></v-col>
           </v-row>
           <v-row>
-            <v-col cols="12">
-              <v-btn variant="tonal" class="color: var(--green-confirm) ; float-right" type="submit" :disabled="indisponivel"
+            <v-col cols="12" class="botoes">
+              <v-btn
+                variant="tonal"
+                class="float-right"
+                @click="$router.go(-1)"
+                :disabled="indisponivel"
+                color="var(--vermilion)"
+                >Voltar</v-btn
+              >
+              <v-btn
+                variant="tonal"
+                class=" float-right"
+                type="submit"
+                color="var(--green-confirm)"
+                :disabled="indisponivel"
                 >Salvar</v-btn
               >
             </v-col>
@@ -66,7 +79,51 @@ export default {
     }
   },
   methods: {
-    ...mapActions(useNotificacoes, ['setNotificacoes'])
+    ...mapActions(useNotificacoes, ['setNotificacoes']),
+    async editar() {
+      if (await this.v$.classe.$validate()) {
+        this.loading = true
+        axios
+          .put(`${useEndpoints().getEdicaoClasseProduto}${this.$route.params.id}`,{
+            classe_produto_nome: this.classe.classe_produto_nome
+          }, {
+            headers: {
+              Accept: 'application/json',
+              Authorization: useEndpoints().getToken
+            }
+          })
+          .then((res) => {
+            console.log(this.classe)
+            this.setNotificacoes(
+              `${res.data.mensagem} -> ${res.data.classe_produto.classe_produto_nome}`,
+              'Sucesso',
+              'sucesso'
+            )
+            this.loading = false
+          })
+          .catch((err) => {
+            if (err.response.data.errors) {
+              const erros = Object.entries(err.response.data.erros)
+              for (const [chave, valor] of erros) {
+                switch (chave) {
+                  case 'classe_produto_nome':
+                    this.setNotificacoes(valor[0], 'Campo do nome da classe', 'erro')
+                    break
+                  default:
+                    this.setNotificacoes(
+                      'Entre em contato com o suporte EdicaoClasseView|EdicaoClasse',
+                      'Erro interno',
+                      'erro'
+                    )
+                }
+              }
+            } else if (err.response.data.erro) {
+              this.setNotificacoes(err.response.data.erro, 'Erro', 'erro')
+            }
+            this.loading = false
+          })
+      }
+    }
   },
   setup() {
     return {
@@ -83,23 +140,29 @@ export default {
         }
       })
       .then((res) => {
-        this.classe = {...res.data.classe_produto}
+        this.classe = { ...res.data.classe_produto }
         this.loading = false
       })
       .catch((err) => {
-        if(err.response.data.erro) {
+        if (err.response.data.erro) {
           this.setNotificacoes(err.response.data.erro, 'Erro', 'erro')
           this.indisponivel = true
           this.loading = false
         }
       })
   },
-    validations() {
+  validations() {
     return {
       classe: {
         classe_produto_nome: {
-          required: helpers.withMessage('Esse campo é obrigatório, por favor, informe-o.', required),
-          maxLength: helpers.withMessage('Esse campo tem que conter no máximo 50 caracteres.', maxLength(50))
+          required: helpers.withMessage(
+            'Esse campo é obrigatório, por favor, informe-o.',
+            required
+          ),
+          maxLength: helpers.withMessage(
+            'Esse campo tem que conter no máximo 50 caracteres.',
+            maxLength(50)
+          )
         }
       }
     }
@@ -116,5 +179,11 @@ export default {
 
 .form-edicao-classe {
   padding: 3rem;
+}
+
+.botoes {
+  display: flex;
+  gap: 1rem;
+  justify-content: end;
 }
 </style>
