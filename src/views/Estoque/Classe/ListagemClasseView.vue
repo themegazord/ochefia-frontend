@@ -38,7 +38,27 @@
               <td>{{ classe.classe_produto_id }}</td>
               <td>{{ classe.classe_produto_nome }}</td>
               <td class="acoes">
+                                <v-btn density="compact" icon="fas fa-magic" variant="flat"
+                  @click="$router.push({ path: `edicao/${classe.classe_produto_id}` })"></v-btn>
+                <v-dialog width="500">
+                  <template v-slot:activator="{ props }">
+                    <v-btn density="compact" icon="fas fa-trash" variant="flat" v-bind="props"></v-btn>
+                  </template>
 
+                  <template v-slot:default="{ isActive }">
+                    <v-card title="Remoção de grupo de produto">
+                      <v-card-text>
+                        Você deseja remover este grupo de produto?
+                      </v-card-text>
+                      <v-card-actions>
+                        <v-spacer></v-spacer>
+                        <v-btn text="Cancelar" @click="isActive.value = false"></v-btn>
+                        <v-btn text="Remover" @click="remocaoGrupoProduto(grupo.grupo_produto_id)" variant="flat"
+                          prepend-icon="fas fa-trash"></v-btn>
+                      </v-card-actions>
+                    </v-card>
+                  </template>
+                </v-dialog>
               </td>
             </tr>
           </tbody>
