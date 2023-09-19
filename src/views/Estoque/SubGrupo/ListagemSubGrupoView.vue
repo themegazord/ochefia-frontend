@@ -38,23 +38,36 @@
               <td>{{ subgrupo.sub_grupo_produto_id }}</td>
               <td>{{ subgrupo.sub_grupo_produto_nome }}</td>
               <td class="acoes">
-                <v-btn density="compact" icon="fas fa-magic" variant="flat"
-                  @click="$router.push({ path: `edicao/${subgrupo.sub_grupo_produto_id}` })"></v-btn>
+                <v-btn
+                  density="compact"
+                  icon="fas fa-magic"
+                  variant="flat"
+                  @click="$router.push({ path: `edicao/${subgrupo.sub_grupo_produto_id}` })"
+                ></v-btn>
                 <v-dialog width="500">
                   <template v-slot:activator="{ props }">
-                    <v-btn density="compact" icon="fas fa-trash" variant="flat" v-bind="props"></v-btn>
+                    <v-btn
+                      density="compact"
+                      icon="fas fa-trash"
+                      variant="flat"
+                      v-bind="props"
+                    ></v-btn>
                   </template>
 
                   <template v-slot:default="{ isActive }">
                     <v-card title="Remoção de grupo de produto">
-                      <v-card-text>
-                        Você deseja remover este grupo de produto?
-                      </v-card-text>
+                      <v-card-text> Você deseja remover este grupo de produto? </v-card-text>
                       <v-card-actions>
                         <v-spacer></v-spacer>
-                        <v-btn text="Cancelar" @click="isActive.value = false"></v-btn>
-                        <v-btn text="Remover" @click="remocao(subgrupo.sub_grupo_produto_id)" variant="flat"
-                          prepend-icon="fas fa-trash" :disabled="removido"></v-btn>
+                        <v-btn text="Cancelar" @click="isActive.value = false" color="var(--green-confirm)" variant="tonal"></v-btn>
+                        <v-btn
+                          text="Remover"
+                          @click="remocao(subgrupo.sub_grupo_produto_id)"
+                          variant="tonal"
+                          prepend-icon="fas fa-trash"
+                          :disabled="removido"
+                          color="var(--vermilion)"
+                        ></v-btn>
                       </v-card-actions>
                     </v-card>
                   </template>
@@ -94,6 +107,7 @@ export default {
     }
   },
   mounted() {
+    this.loading = true
     axios
       .get(useEndpoints().getListagemSubGrupoProduto, {
         headers: {
@@ -102,6 +116,7 @@ export default {
       })
       .then((res) => {
         this.subgrupos = res.data.subgrupos
+        this.loading = false
       })
       .catch((err) => {
         if (err.data.response.error) {
@@ -110,6 +125,7 @@ export default {
             'Erro',
             'erro'
           )
+          this.loading = false
         }
       })
   },
@@ -117,13 +133,13 @@ export default {
     ...mapActions(useNotificacoes, ['setNotificacoes']),
     remocao(id) {
       this.loading = true
-      axios.
-        delete(`${useEndpoints().getRemocaoSubGrupoProduto}${id}`, {
+      axios
+        .delete(`${useEndpoints().getRemocaoSubGrupoProduto}${id}`, {
           headers: {
             Accept: 'application/json',
             Authorization: useEndpoints().getToken
           }
-        })  
+        })
         .then((res) => {
           this.loading = false
           if (res.status == 204) {

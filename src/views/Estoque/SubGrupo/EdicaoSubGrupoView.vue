@@ -18,14 +18,25 @@
                 label="Insira o nome do subgrupo"
                 @input="v$.subgrupo.sub_grupo_produto_nome.$touch"
                 @blur="v$.subgrupo.sub_grupo_produto_nome.$touch"
-                :disabled="naoExiste"
+                :disabled="indisponivel"
               ></v-text-field
             ></v-col>
             <v-col cols="6"></v-col>
           </v-row>
           <v-row>
-            <v-col cols="12">
-              <v-btn variant="tonal" class="color: var(--green-confirm) ; float-right" type="submit" :disabled="naoExiste"
+            <v-col cols="12" class="botoes">
+              <v-btn
+                variant="tonal"
+                @click="$router.go(-1)"
+                :disabled="indisponivel"
+                color="var(--vermilion)"
+                >Voltar</v-btn
+              >
+              <v-btn
+                variant="tonal"
+                type="submit"
+                color="var(--green-confirm)"
+                :disabled="indisponivel"
                 >Salvar</v-btn
               >
             </v-col>
@@ -62,7 +73,7 @@ export default {
         sub_grupo_produto_id: '',
         sub_grupo_produto_nome: ''
       },
-      naoExiste: false
+      indisponivel: false
     }
   },
   mounted() {
@@ -80,7 +91,7 @@ export default {
       })
       .catch((err) => {
         if (err.response.data.erro) {
-          this.naoExiste = true
+          this.indisponivel = true
           this.loading = false
           this.setNotificacoes(err.response.data.erro, 'Erro', 'erro')
         }
@@ -166,5 +177,11 @@ export default {
 
 .form-cadastro-subgrupo {
   padding: 3rem;
+}
+
+.botoes {
+  display: flex;
+  gap: 1rem;
+  justify-content: end;
 }
 </style>

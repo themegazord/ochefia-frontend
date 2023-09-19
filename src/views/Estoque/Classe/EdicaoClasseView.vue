@@ -27,7 +27,6 @@
             <v-col cols="12" class="botoes">
               <v-btn
                 variant="tonal"
-                class="float-right"
                 @click="$router.go(-1)"
                 :disabled="indisponivel"
                 color="var(--vermilion)"
@@ -35,7 +34,6 @@
               >
               <v-btn
                 variant="tonal"
-                class=" float-right"
                 type="submit"
                 color="var(--green-confirm)"
                 :disabled="indisponivel"

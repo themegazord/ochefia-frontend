@@ -40,8 +40,8 @@
                       </v-card-text>
                       <v-card-actions>
                         <v-spacer></v-spacer>
-                        <v-btn text="Cancelar" @click="isActive.value = false"></v-btn>
-                        <v-btn text="Remover" @click="remocaoGrupoProduto(grupo.grupo_produto_id)" variant="flat"
+                        <v-btn text="Cancelar" @click="isActive.value = false" color="var(--green-confirm)" variant="tonal"></v-btn>
+                        <v-btn text="Remover" @click="remocaoGrupoProduto(grupo.grupo_produto_id)" variant="tonal" color="var(--vermilion)"
                           prepend-icon="fas fa-trash"></v-btn>
                       </v-card-actions>
                     </v-card>
