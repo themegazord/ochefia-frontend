@@ -10,6 +10,9 @@ import EdicaoGrupoView from "../views/Estoque/Grupo/EdicaoGrupoView.vue"
 import ListagemSubGrupoView from "../views/Estoque/SubGrupo/ListagemSubGrupoView.vue"
 import CadastroSubGrupoView from "../views/Estoque/SubGrupo/CadastroSubGrupoView.vue"
 import EdicaoSubGrupoView from "../views/Estoque/SubGrupo/EdicaoSubGrupoView.vue"
+import ListagemClasseView from "../views/Estoque/Classe/ListagemClasseView.vue"
+import CadastroClasseView from "../views/Estoque/Classe/CadastroClasseView.vue"
+import EdicaoClasseView from "../views/Estoque/Classe/EdicaoClasseView.vue"
 
 
 const router = createRouter({
@@ -74,6 +77,27 @@ const router = createRouter({
               path: 'edicao/:id',
               name: 'estoque.subgrupo.edicao',
               component: EdicaoSubGrupoView
+            }
+          ]
+        },
+        {
+          path: 'classe',
+          name: 'classe',
+          children: [
+            {
+              path: 'listagem',
+              name: 'classe.listagem',
+              component: ListagemClasseView
+            },
+            {
+              path: 'cadastro',
+              name: 'classe.cadastro',
+              component: CadastroClasseView
+            },
+            {
+              path: 'edicao/:id',
+              name: 'estoque.classe.edicao',
+              component: EdicaoClasseView
             }
           ]
         }

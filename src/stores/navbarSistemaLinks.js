@@ -66,7 +66,7 @@ export const useNavbarSistemaLinksStore = defineStore('linksSistema', {
             icon: ''
           },
           classe: {
-            url: '/estoque/classe',
+            url: '/estoque/classe/listagem',
             label: 'Classes',
             icon: ''
           },
