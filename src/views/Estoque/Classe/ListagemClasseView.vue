@@ -63,11 +63,13 @@
                           text="Cancelar"
                           @click="isActive.value = false"
                           :disabled="indisponivel"
+                          color="var(--green-confirm)" variant="tonal"
                         ></v-btn>
                         <v-btn
                           text="Remover"
                           @click="remocaoClasseProduto(classe.classe_produto_id)"
-                          variant="flat"
+                          variant="tonal"
+                          color="var(--vermilion)"
                           :disabled="indisponivel"
                           prepend-icon="fas fa-trash"
                         ></v-btn>
