@@ -11,6 +11,7 @@ import ListagemSubGrupoView from "../views/Estoque/SubGrupo/ListagemSubGrupoView
 import CadastroSubGrupoView from "../views/Estoque/SubGrupo/CadastroSubGrupoView.vue"
 import EdicaoSubGrupoView from "../views/Estoque/SubGrupo/EdicaoSubGrupoView.vue"
 import ListagemClasseView from "../views/Estoque/Classe/ListagemClasseView.vue"
+import CadastroClasseView from "../views/Estoque/Classe/CadastroClasseView.vue"
 
 
 const router = createRouter({
@@ -90,7 +91,7 @@ const router = createRouter({
             {
               path: 'cadastro',
               name: 'classe.cadastro',
-              component: 'CadastroclasseView'
+              component: CadastroClasseView
             },
             {
               path: 'edicao/:id',
