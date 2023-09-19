@@ -1,5 +1,5 @@
 <template>
-    <v-layout>
+  <v-layout>
     <NavbarSistemaComponent :menus="menus" :subMenus="subMenus" />
     <NotificacaoComponent />
     <LoadingComponent :loading="loading" />
@@ -38,23 +38,39 @@
               <td>{{ classe.classe_produto_id }}</td>
               <td>{{ classe.classe_produto_nome }}</td>
               <td class="acoes">
-                                <v-btn density="compact" icon="fas fa-magic" variant="flat"
-                  @click="$router.push({ path: `edicao/${classe.classe_produto_id}` })"></v-btn>
+                <v-btn
+                  density="compact"
+                  icon="fas fa-magic"
+                  variant="flat"
+                  @click="$router.push({ path: `edicao/${classe.classe_produto_id}` })"
+                ></v-btn>
                 <v-dialog width="500">
                   <template v-slot:activator="{ props }">
-                    <v-btn density="compact" icon="fas fa-trash" variant="flat" v-bind="props"></v-btn>
+                    <v-btn
+                      density="compact"
+                      icon="fas fa-trash"
+                      variant="flat"
+                      v-bind="props"
+                    ></v-btn>
                   </template>
 
                   <template v-slot:default="{ isActive }">
                     <v-card title="Remoção de grupo de produto">
-                      <v-card-text>
-                        Você deseja remover este grupo de produto?
-                      </v-card-text>
+                      <v-card-text> Você deseja remover este grupo de produto? </v-card-text>
                       <v-card-actions>
                         <v-spacer></v-spacer>
-                        <v-btn text="Cancelar" @click="isActive.value = false"></v-btn>
-                        <v-btn text="Remover" @click="remocaoGrupoProduto(grupo.grupo_produto_id)" variant="flat"
-                          prepend-icon="fas fa-trash"></v-btn>
+                        <v-btn
+                          text="Cancelar"
+                          @click="isActive.value = false"
+                          :disabled="indisponivel"
+                        ></v-btn>
+                        <v-btn
+                          text="Remover"
+                          @click="remocaoClasseProduto(classe.classe_produto_id)"
+                          variant="flat"
+                          :disabled="indisponivel"
+                          prepend-icon="fas fa-trash"
+                        ></v-btn>
                       </v-card-actions>
                     </v-card>
                   </template>
@@ -76,6 +92,8 @@ import NotificacaoComponent from '../../../components/Geral/NotificacaoComponent
 import NavbarSistemaComponent from '../../../components/Navbar/NavbarSistemaComponent.vue'
 import { useNavbarSistemaLinksStore } from '../../../stores/navbarSistemaLinks'
 import { useEndpoints } from '../../../stores/endpoints'
+import { mapActions } from 'pinia'
+import { useNotificacoes } from '../../../stores/notificacao'
 export default {
   components: {
     LoadingComponent,
@@ -87,7 +105,8 @@ export default {
       loading: false,
       menus: useNavbarSistemaLinksStore().menus,
       subMenus: useNavbarSistemaLinksStore().subMenus,
-      classes: []
+      classes: [],
+      indisponivel: false
     }
   },
   mounted() {
@@ -113,12 +132,40 @@ export default {
           )
         }
       })
+  },
+  methods: {
+    ...mapActions(useNotificacoes, ['setNotificacoes']),
+    remocaoClasseProduto(id) {
+      this.loading = true
+      axios
+        .delete(`${useEndpoints().getRemocaoClasseProduto}${id}`, {
+          headers: {
+            Accept: 'application/json',
+            Authorization: useEndpoints().getToken
+          }
+        })
+        .then((res) => {
+          if (res.status == 204) {
+            this.loading = false
+            this.indisponivel = true
+            this.setNotificacoes('Classe removida com sucesso', 'Sucesso', 'sucesso')
+            setTimeout(() => {
+              this.$router.go()
+            }, 3000)
+          }
+        })
+        .catch((err) => {
+          if (err.response.data.erro) {
+            this.setNotificacoes(err.response.data.erro, 'Erro', 'erro')
+            this.loading = false
+          }
+        })
+    }
   }
 }
 </script>
 
 <style scoped>
-
 .container-listagem-classe {
   padding: 4rem;
   font-family: 'Poppins', sans-serif;
@@ -139,5 +186,4 @@ export default {
   display: flex;
   gap: 0.5rem;
 }
-
 </style>
