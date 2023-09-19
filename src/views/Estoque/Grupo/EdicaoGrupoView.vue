@@ -16,7 +16,7 @@
                 :error-messages="v$.grupo.grupo_produto_nome.$errors.map((e) => e.$message)"
                 counter="30"
                 label="Insira o nome do grupo"
-                :disabled="naoExiste"
+                :disabled="indisponivel"
                 @input="v$.grupo.grupo_produto_nome.$touch"
                 @blur="v$.grupo.grupo_produto_nome.$touch"
               ></v-text-field
@@ -27,14 +27,25 @@
                 item-title="tipo"
                 item-value="tipo_abbr"
                 label="Insira o tipo do grupo"
-                :disabled="naoExiste"
+                :disabled="indisponivel"
                 v-model="grupo.grupo_produto_tipo"
               ></v-select
             ></v-col>
           </v-row>
           <v-row>
-            <v-col cols="12">
-              <v-btn variant="tonal" class="color: var(--green-confirm) ; float-right" type="submit" :disabled="naoExiste"
+            <v-col cols="12" class="botoes">
+              <v-btn
+                variant="tonal"
+                @click="$router.go(-1)"
+                :disabled="indisponivel"
+                color="var(--vermilion)"
+                >Voltar</v-btn
+              >
+              <v-btn
+                variant="tonal"
+                type="submit"
+                color="var(--green-confirm)"
+                :disabled="indisponivel"
                 >Salvar</v-btn
               >
             </v-col>
@@ -99,7 +110,7 @@ export default {
         grupo_produto_nome: '',
         grupo_produto_tipo: ''
       },
-      naoExiste: false
+      indisponivel: false
     }
   },
   mounted() {
@@ -121,7 +132,7 @@ export default {
       })
       .catch((err) => {
         this.loading = false
-        this.naoExiste = true
+        this.indisponivel = true
         this.setNotificacoes(err.response.data.erro, 'Erro', 'erro')
       })
   },
@@ -200,5 +211,11 @@ export default {
 
 .form-cadastro-grupo {
   padding: 3rem;
+}
+
+.botoes {
+  display: flex;
+  gap: 1rem;
+  justify-content: end;
 }
 </style>

@@ -31,8 +31,11 @@
             ></v-col>
           </v-row>
           <v-row>
-            <v-col cols="12">
-              <v-btn variant="tonal" class="color: var(--green-confirm) ; float-right" type="submit"
+            <v-col cols="12" class="botoes">
+              <v-btn variant="tonal" @click="$router.go(-1)" color="var(--vermilion)"
+                >Voltar</v-btn
+              >
+              <v-btn variant="tonal" type="submit" color="var(--green-confirm)"
                 >Salvar</v-btn
               >
             </v-col>
@@ -169,5 +172,11 @@ export default {
 
 .form-cadastro-grupo {
   padding: 3rem;
+}
+
+.botoes {
+  display: flex;
+  gap: 1rem;
+  justify-content: end;
 }
 </style>
