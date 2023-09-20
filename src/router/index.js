@@ -13,6 +13,7 @@ import EdicaoSubGrupoView from "../views/Estoque/SubGrupo/EdicaoSubGrupoView.vue
 import ListagemClasseView from "../views/Estoque/Classe/ListagemClasseView.vue"
 import CadastroClasseView from "../views/Estoque/Classe/CadastroClasseView.vue"
 import EdicaoClasseView from "../views/Estoque/Classe/EdicaoClasseView.vue"
+import ListagemFabricanteView from "../views/Estoque/Fabricante/ListagemFabricanteView.vue"
 
 
 const router = createRouter({
@@ -108,7 +109,7 @@ const router = createRouter({
             {
               path: 'listagem',
               name: 'fabricante.listagem',
-              component: 'ListagemFabricanteView'
+              component: ListagemFabricanteView
             },
             {
               path: 'cadastro',
@@ -116,7 +117,7 @@ const router = createRouter({
               component: 'CadastroFabricanteView'
             },
             {
-              path: 'edicao',
+              path: 'edicao/:id',
               name: 'fabricante.edicao',
               component: 'EdicaoFabricanteView'
             }
