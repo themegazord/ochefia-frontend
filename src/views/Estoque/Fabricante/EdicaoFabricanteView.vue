@@ -13,7 +13,9 @@
               <v-text-field
                 type="text"
                 v-model="fabricante.fabricante_produto_nome"
-                :error-messages="v$.fabricante.fabricante_produto_nome.$errors.map((e) => e.$message)"
+                :error-messages="
+                  v$.fabricante.fabricante_produto_nome.$errors.map((e) => e.$message)
+                "
                 counter="90"
                 label="Insira o nome do fabricante"
                 @input="v$.fabricante.fabricante_produto_nome.$touch"
@@ -54,6 +56,8 @@ import LoadingComponent from '../../../components/Geral/LoadingComponent.vue'
 import { useNavbarSistemaLinksStore } from '../../../stores/navbarSistemaLinks'
 import useVuelidate from '@vuelidate/core'
 import { helpers, maxLength, required } from '@vuelidate/validators'
+import axios from 'axios'
+import { useEndpoints } from '../../../stores/endpoints'
 export default {
   components: {
     NavbarSistemaComponent,
@@ -71,6 +75,27 @@ export default {
       },
       indisponivel: false
     }
+  },
+  mounted() {
+    this.loading = true
+    axios
+      .get(`${useEndpoints().getConsultaFabricanteProduto}${this.$route.params.id}`, {
+        headers: {
+          Accept: 'application/json',
+          Authorization: useEndpoints().getToken
+        }
+      })
+      .then((res) => {
+        this.fabricante = { ...res.data.fabricante_produto }
+        this.loading = false
+      })
+      .catch((err) => {
+        if (err.response.data.erro) {
+          this.indisponivel = true
+          this.loading = false
+          this.setNotificacoes(err.response.data.erro, 'Erro', 'erro')
+        }
+      })
   },
   setup() {
     return {
