@@ -100,6 +100,27 @@ const router = createRouter({
               component: EdicaoClasseView
             }
           ]
+        },
+        {
+          path: 'fabricante',
+          name: 'fabricante',
+          children: [
+            {
+              path: 'listagem',
+              name: 'fabricante.listagem',
+              component: 'ListagemFabricanteView'
+            },
+            {
+              path: 'cadastro',
+              name: 'fabricante.cadastro',
+              component: 'CadastroFabricanteView'
+            },
+            {
+              path: 'edicao',
+              name: 'fabricante.edicao',
+              component: 'EdicaoFabricanteView'
+            }
+          ]
         }
       ]
     }
