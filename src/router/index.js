@@ -14,7 +14,7 @@ import ListagemClasseView from "../views/Estoque/Classe/ListagemClasseView.vue"
 import CadastroClasseView from "../views/Estoque/Classe/CadastroClasseView.vue"
 import EdicaoClasseView from "../views/Estoque/Classe/EdicaoClasseView.vue"
 import ListagemFabricanteView from "../views/Estoque/Fabricante/ListagemFabricanteView.vue"
-
+import CadastroFabricanteView from "../views/Estoque/Fabricante/CadastroFabricanteView.vue"
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -114,7 +114,7 @@ const router = createRouter({
             {
               path: 'cadastro',
               name: 'fabricante.cadastro',
-              component: 'CadastroFabricanteView'
+              component: CadastroFabricanteView
             },
             {
               path: 'edicao/:id',
