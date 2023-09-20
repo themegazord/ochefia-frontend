@@ -61,8 +61,8 @@ export const useNavbarSistemaLinksStore = defineStore('linksSistema', {
             icon: ''
           },
           fornecedor: {
-            url: '/estoque/fornecedor',
-            label: 'Fornecedor',
+            url: '/estoque/fabricante/listagem',
+            label: 'Fabricantes',
             icon: ''
           },
           classe: {
