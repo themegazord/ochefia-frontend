@@ -58,6 +58,8 @@ import useVuelidate from '@vuelidate/core'
 import { helpers, maxLength, required } from '@vuelidate/validators'
 import axios from 'axios'
 import { useEndpoints } from '../../../stores/endpoints'
+import { mapActions } from 'pinia'
+import { useNotificacoes } from '../../../stores/notificacao'
 export default {
   components: {
     NavbarSistemaComponent,
@@ -96,6 +98,54 @@ export default {
           this.setNotificacoes(err.response.data.erro, 'Erro', 'erro')
         }
       })
+  },
+  methods: {
+    ...mapActions(useNotificacoes, ['setNotificacoes']),
+    async editar() {
+      if (await this.v$.fabricante.$validate()) {
+        this.loading = true
+        axios
+          .put(
+            `${useEndpoints().getEdicaoFabricanteProduto}${this.fabricante.fabricante_produto_id}`,
+            {
+              fabricante_produto_nome: this.fabricante.fabricante_produto_nome
+            },
+            {
+              headers: {
+                Accept: 'application/json',
+                Authorization: useEndpoints().getToken
+              }
+            }
+          )
+          .then((res) => {
+            this.setNotificacoes(
+              `${res.data.mensagem} => ${this.fabricante.fabricante_produto_nome}`, 'Sucesso', 'sucesso'
+            )
+            this.loading = false
+          })
+          .catch((err) => {
+            if (err.response.data.errors) {
+              const erros = Object.entries(err.response.data.errors)
+              for (const [chave, valor] of erros) {
+                switch (chave) {
+                  case 'fabricante_produto_nome':
+                    this.setNotificacoes(valor[0], 'Campo de nome do fabricante', 'erro')
+                    break
+                  default:
+                    this.setNotificacoes(
+                      'Entre em contato com o suporte EdicaoFabricanteView|CadastroFabricante',
+                      'Erro interno',
+                      'erro'
+                    )
+                }
+              }
+            } else if (err.response.data.erro) {
+              this.setNotificacoes(err.response.data.erro, 'Erro ao editar fabricante', 'erro')
+            }
+            this.loading = false
+          })
+      }
+    }
   },
   setup() {
     return {
