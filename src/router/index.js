@@ -13,7 +13,9 @@ import EdicaoSubGrupoView from "../views/Estoque/SubGrupo/EdicaoSubGrupoView.vue
 import ListagemClasseView from "../views/Estoque/Classe/ListagemClasseView.vue"
 import CadastroClasseView from "../views/Estoque/Classe/CadastroClasseView.vue"
 import EdicaoClasseView from "../views/Estoque/Classe/EdicaoClasseView.vue"
-
+import ListagemFabricanteView from "../views/Estoque/Fabricante/ListagemFabricanteView.vue"
+import CadastroFabricanteView from "../views/Estoque/Fabricante/CadastroFabricanteView.vue"
+import EdicaoFabricanteView from "../views/Estoque/Fabricante/EdicaoFabricanteView.vue"
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -98,6 +100,27 @@ const router = createRouter({
               path: 'edicao/:id',
               name: 'estoque.classe.edicao',
               component: EdicaoClasseView
+            }
+          ]
+        },
+        {
+          path: 'fabricante',
+          name: 'fabricante',
+          children: [
+            {
+              path: 'listagem',
+              name: 'fabricante.listagem',
+              component: ListagemFabricanteView
+            },
+            {
+              path: 'cadastro',
+              name: 'fabricante.cadastro',
+              component: CadastroFabricanteView
+            },
+            {
+              path: 'edicao/:id',
+              name: 'fabricante.edicao',
+              component: EdicaoFabricanteView
             }
           ]
         }

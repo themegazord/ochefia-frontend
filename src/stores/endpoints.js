@@ -39,6 +39,13 @@ export const useEndpoints = defineStore('endpoints', {
         consulta: `${servidor}/api/v1/classe_produto/classe/`,
         edicao: `${servidor}/api/v1/classe_produto/classe/`,
         remocao: `${servidor}/api/v1/classe_produto/classe/`,
+      },
+      fabricante: {
+        listagem: `${servidor}/api/v1/fabricante_produto/listagem`,
+        cadastro: `${servidor}/api/v1/fabricante_produto/cadastro`,
+        consulta: `${servidor}/api/v1/fabricante_produto/fabricante/`,
+        edicao: `${servidor}/api/v1/fabricante_produto/fabricante/`,
+        remocao: `${servidor}/api/v1/fabricante_produto/fabricante/`,
       }
     },
     token: `Bearer ${localStorage.getItem('token') || sessionStorage.getItem('token')}`
@@ -64,5 +71,10 @@ export const useEndpoints = defineStore('endpoints', {
     getConsultaClasseProduto: (state) => state.estoque.classes.consulta,
     getEdicaoClasseProduto: (state) => state.estoque.classes.edicao,
     getRemocaoClasseProduto: (state) => state.estoque.classes.remocao,
+    getListagemFabricanteProduto: (state) => state.estoque.fabricante.listagem,
+    getCadastroFabricanteProduto: (state) => state.estoque.fabricante.cadastro,
+    getConsultaFabricanteProduto: (state) => state.estoque.fabricante.consulta,
+    getEdicaoFabricanteProduto: (state) => state.estoque.fabricante.edicao,
+    getRemocaoFabricanteProduto: (state) => state.estoque.fabricante.remocao,
   }
 })
