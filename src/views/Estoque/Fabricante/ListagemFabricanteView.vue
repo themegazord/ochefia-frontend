@@ -7,8 +7,8 @@
     <v-main>
       <div class="container-listagem-fabricante">
         <h2>
-          Aqui, você vai ver seus fabricantes cadastrados e poderá editá-los, excluí-los ou criar novos
-          fabricantes.
+          Aqui, você vai ver seus fabricantes cadastrados e poderá editá-los, excluí-los ou criar
+          novos fabricantes.
         </h2>
         <div class="container-cadastro-fabricante">
           <v-btn
@@ -94,6 +94,8 @@ import NotificacaoComponent from '../../../components/Geral/NotificacaoComponent
 import NavbarSistemaComponent from '../../../components/Navbar/NavbarSistemaComponent.vue'
 import { useNavbarSistemaLinksStore } from '../../../stores/navbarSistemaLinks'
 import { useEndpoints } from '../../../stores/endpoints'
+import { mapActions } from 'pinia'
+import { useNotificacoes } from '../../../stores/notificacao'
 export default {
   components: {
     LoadingComponent,
@@ -131,6 +133,35 @@ export default {
           this.loading = false
         }
       })
+  },
+  methods: {
+    ...mapActions(useNotificacoes, ['setNotificacoes']),
+    remocao(id) {
+      this.loading = true
+      axios
+        .delete(`${useEndpoints().getRemocaoFabricanteProduto}${id}`, {
+          headers: {
+            Accept: 'application/json',
+            Authorization: useEndpoints().getToken
+          }
+        })
+        .then((res) => {
+          if (res.status == 204) {
+            this.setNotificacoes('Fabricante removido com sucesso', 'Sucesso', 'sucesso')
+            this.removido = true
+            this.loading = false
+            setTimeout(() => {
+              this.$router.go()
+            }, 3000)
+          }
+        })
+        .catch((err) => {
+          if (err.response.data.erro) {
+            this.setNotificacoes(err.response.data.erro, 'Erro', 'erro')
+          }
+          this.loading = false
+        })
+    }
   }
 }
 </script>
