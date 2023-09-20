@@ -39,6 +39,9 @@ export const useEndpoints = defineStore('endpoints', {
         consulta: `${servidor}/api/v1/classe_produto/classe/`,
         edicao: `${servidor}/api/v1/classe_produto/classe/`,
         remocao: `${servidor}/api/v1/classe_produto/classe/`,
+      },
+      fabricante: {
+        listagem: `${servidor}/api/v1/fabricante_produto/listagem`,
       }
     },
     token: `Bearer ${localStorage.getItem('token') || sessionStorage.getItem('token')}`
@@ -64,5 +67,6 @@ export const useEndpoints = defineStore('endpoints', {
     getConsultaClasseProduto: (state) => state.estoque.classes.consulta,
     getEdicaoClasseProduto: (state) => state.estoque.classes.edicao,
     getRemocaoClasseProduto: (state) => state.estoque.classes.remocao,
+    getListagemFabricanteProduto: (state) => state.estoque.fabricante.listagem
   }
 })
