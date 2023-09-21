@@ -71,7 +71,7 @@ export const useNavbarSistemaLinksStore = defineStore('linksSistema', {
             icon: ''
           },
           unidades: {
-            url: '/estoque/unidade',
+            url: '/estoque/unidade/listagem',
             label: 'Unidade de medida',
             icon: ''
           }

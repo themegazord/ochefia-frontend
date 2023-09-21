@@ -16,6 +16,7 @@ import EdicaoClasseView from "../views/Estoque/Classe/EdicaoClasseView.vue"
 import ListagemFabricanteView from "../views/Estoque/Fabricante/ListagemFabricanteView.vue"
 import CadastroFabricanteView from "../views/Estoque/Fabricante/CadastroFabricanteView.vue"
 import EdicaoFabricanteView from "../views/Estoque/Fabricante/EdicaoFabricanteView.vue"
+import ListagemUnidadeView from "../views/Estoque/Unidade/ListagemUnidadeView.vue"
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -123,7 +124,28 @@ const router = createRouter({
               component: EdicaoFabricanteView
             }
           ]
-        }
+        },
+        {
+          path: 'unidade',
+          name: 'unidade',
+          children: [
+            {
+              path: 'listagem',
+              name: 'unidade.listagem',
+              component: ListagemUnidadeView
+            },
+            {
+              path: 'cadastro',
+              name: 'unidade.cadastro',
+              component: 'CadastroUnidadeView'
+            },
+            {
+              path: 'edicao/:id',
+              name: 'unidade.edicao',
+              component: 'EdicaoUnidadeView'
+            }
+          ]
+        },
       ]
     }
   ]
