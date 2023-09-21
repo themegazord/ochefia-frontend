@@ -106,7 +106,7 @@ export default {
         this.loading = true
         axios
           .put(
-            `${useEndpoints().getEdicaounidadeProduto}${this.unidade.unidade_id}`,
+            `${useEndpoints().getEdicaoUnidadeProduto}${this.unidade.unidade_id}`,
             {
               unidade_nome: this.unidade.unidade_nome
             },
@@ -129,18 +129,18 @@ export default {
               for (const [chave, valor] of erros) {
                 switch (chave) {
                   case 'unidade_nome':
-                    this.setNotificacoes(valor[0], 'Campo de nome do unidade', 'erro')
+                    this.setNotificacoes(valor[0], 'Campo de nome da unidade de medida', 'erro')
                     break
                   default:
                     this.setNotificacoes(
-                      'Entre em contato com o suporte EdicaounidadeView|Cadastrounidade',
+                      'Entre em contato com o suporte EdicaoUnidadeView|CadastroUnidade',
                       'Erro interno',
                       'erro'
                     )
                 }
               }
             } else if (err.response.data.erro) {
-              this.setNotificacoes(err.response.data.erro, 'Erro ao editar unidade', 'erro')
+              this.setNotificacoes(err.response.data.erro, 'Erro ao editar unidade de medida', 'erro')
             }
             this.loading = false
           })
