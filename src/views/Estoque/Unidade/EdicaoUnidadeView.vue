@@ -81,7 +81,7 @@ export default {
   mounted() {
     this.loading = true
     axios
-      .get(`${useEndpoints().getConsultaunidadeProduto}${this.$route.params.id}`, {
+      .get(`${useEndpoints().getConsultaUnidadeProduto}${this.$route.params.id}`, {
         headers: {
           Accept: 'application/json',
           Authorization: useEndpoints().getToken
