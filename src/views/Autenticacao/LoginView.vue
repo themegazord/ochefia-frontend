@@ -108,11 +108,13 @@ export default {
             if (this.login.manterLogado) {
               localStorage.setItem('token', resposta.data.mensagem.token)
               localStorage.setItem('usuario', JSON.stringify(resposta.data.mensagem.user))
+              localStorage.setItem('empresa_token', resposta.data.mensagem.empresa_token)
               this.loading = false
               this.$router.push({ path: '/dashboard' })
             } else if (!this.login.manterLogado) {
               sessionStorage.setItem('token', resposta.data.mensagem.token)
               sessionStorage.setItem('usuario', JSON.stringify(resposta.data.mensagem.user))
+              sessionStorage.setItem('empresa_token', resposta.data.mensagem.empresa_token)
               this.loading = false
               this.$router.push({ path: '/dashboard' })
             }
