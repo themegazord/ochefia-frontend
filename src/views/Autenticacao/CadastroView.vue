@@ -278,10 +278,10 @@ export default {
               }
             )
             .then((resposta) => {
-              sessionStorage.setItem('token', resposta.data.dados.login.token)
-              sessionStorage.setItem('usuario', JSON.stringify(resposta.data.dados.login.user))
-              this.loading = false
-              this.$router.push({ name: 'dashboard' })
+              if (resposta.status == 201) {
+                this.loading = false
+                this.$router.push({ name: 'login' })
+              }
             })
             .catch((erro) => {
               if (erro.response.data.errors) {
@@ -351,16 +351,10 @@ export default {
                   }
                 )
                 .then((donoResposta) => {
-                  sessionStorage.setItem('token', donoResposta.data.dados.login.token)
-                  sessionStorage.setItem(
-                    'usuario',
-                    JSON.stringify({
-                      ...donoResposta.data.dados.login.user,
-                      acessos: donoResposta.data.dados.funcionario.acessos
-                    })
-                  )
-                  this.loading = false
-                  this.$router.push({ name: 'dashboard' })
+                  if (donoResposta.status == 201) {                    
+                    this.loading = false
+                    this.$router.push({ name: 'login' })
+                  }
                 })
                 .catch((donoErro) => {
                   console.log(donoErro)
