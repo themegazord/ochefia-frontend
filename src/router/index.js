@@ -49,7 +49,7 @@ const router = createRouter({
     {
       path: '/estoque',
       name: 'estoque',
-      meta: { requiresAuth: true },
+      meta: { requiresAuth: true, literalName: 'Estoque' },
       children: [
         {
           path: 'grupo/listagem',
