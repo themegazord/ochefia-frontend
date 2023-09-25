@@ -2,7 +2,6 @@
   <v-layout>
     <NavbarSistemaComponent :menus="menus" :subMenus="subMenus" />
     <NotificacaoComponent />
-    <v-app-bar class="pl-6">Estoque</v-app-bar>
     <LoadingComponent :loading="loading" />
     <v-main>
       <div class="container-cadastro-produto">
@@ -10,18 +9,25 @@
         <form class="form-cadastro-produto" @submit.prevent="cadastrar">
           <v-row>
             <v-col cols="6">
-              <v-text-field type="text" v-model="produto.produto_nome" :error-messages="v$.produto.produto_nome.$errors.map((e) => e.$message)
-                " counter="90" label="Insira o nome do produto" @input="v$.produto.produto_nome.$touch"
-                @blur="v$.produto.produto_nome.$touch"></v-text-field></v-col>
+              <v-text-field
+                type="text"
+                v-model="produto.produto_nome"
+                :error-messages="v$.produto.produto_nome.$errors.map((e) => e.$message)"
+                counter="90"
+                label="Insira o nome do produto"
+                @input="v$.produto.produto_nome.$touch"
+                @blur="v$.produto.produto_nome.$touch"
+              ></v-text-field
+            ></v-col>
             <v-col cols="6">
-              <v-text-field 
+              <v-text-field
                 prefix="R$"
                 v-model="produto.produto_preco"
                 label="Insira o preço do produto"
                 :error-messages="v$.produto.produto_preco.$errors.map((e) => e.$message)"
                 @input="v$.produto.produto_preco.$touch"
                 @blur="v$.produto.produto_preco.$touch"
-                ></v-text-field>
+              ></v-text-field>
             </v-col>
           </v-row>
           <v-row>
@@ -32,15 +38,55 @@
                 :error-messages="v$.produto.produto_estoque.$errors.map((e) => e.$message)"
                 @input="v$.produto.produto_estoque.$touch"
                 @blur="v$.produto.produto_estoque.$touch"
-                ></v-text-field>
+              ></v-text-field>
             </v-col>
             <v-col cols="6">
               <v-select
                 :items="grupos"
                 item-title="grupo_produto_nome"
-                item_value="grupo_produto_id"
+                item-value="grupo_produto_id"
                 label="Insira o seu grupo"
                 v-model="produto.grupo_produto_id"
+              ></v-select>
+            </v-col>
+          </v-row>
+          <v-row>
+            <v-col cols="6">
+              <v-select
+                :items="subgrupos"
+                item-title="sub_grupo_produto_nome"
+                item-value="sub_grupo_produto_id"
+                label="Insira o sub grupo"
+                v-model="produto.sub_grupo_produto_id"
+              ></v-select>
+            </v-col>
+            <v-col cols="6">
+              <v-select
+                :items="fabricantes"
+                item-title="fabricante_produto_nome"
+                item-value="fabricante_produto_id"
+                label="Insira o fabricante"
+                v-model="produto.fabricante_produto_id"
+              ></v-select>
+            </v-col>
+          </v-row>
+          <v-row>
+            <v-col cols="6">
+              <v-select
+                :items="classes"
+                item-title="classe_produto_nome"
+                item-value="classe_produto_id"
+                label="Insira a classe do produto"
+                v-model="produto.classe_produto_id"
+              ></v-select>
+            </v-col>
+            <v-col cols="6">
+              <v-select
+                :items="unidades"
+                item-title="unidade_nome"
+                item-value="unidade_id"
+                label="Insira a unidade de medida"
+                v-model="produto.unidade_id"
               ></v-select>
             </v-col>
           </v-row>
@@ -87,22 +133,23 @@ export default {
       produto: {
         empresa_id: JSON.parse(atob(useEndpoints().getEmpresaToken)).empresa_id,
         grupo_produto_id: undefined,
-        sub_grupo_produto_id: 0,
-        fabricante_produto_id: 0,
-        classe_produto_id: 0,
-        unidade_id: 0,
+        sub_grupo_produto_id: undefined,
+        fabricante_produto_id: undefined,
+        classe_produto_id: undefined,
+        unidade_id: undefined,
         produto_nome: '',
-        produto_estoque: 0.00,
-        produto_preco: 0.00,
+        produto_estoque: 0.0,
+        produto_preco: 0.0
       },
       grupos: [],
       subgrupos: [],
       fabricantes: [],
       classes: [],
-      unidades: [],
+      unidades: []
     }
   },
   mounted() {
+    console.log(this.$route.meta.literalName)
     axios
       .get(useEndpoints().getListagemGrupoProduto, {
         headers: {
@@ -165,6 +212,7 @@ export default {
       .then((res) => {
         this.unidades = res.data.unidades
         this.setInfo('Coletando os dados dos unidades...')
+        this.dispatchInfo()
         this.loading = false
         this.dispatchInfo
       })
@@ -179,7 +227,7 @@ export default {
       if (await this.v$.produto.$validate()) {
         this.loading = true
         axios
-          .post(useEndpoints().getCadastroprodutoProduto, this.produto, {
+          .post(useEndpoints().getCadastroProduto, this.produto, {
             headers: {
               Accept: 'application/json',
               Authorization: useEndpoints().getToken
@@ -202,6 +250,27 @@ export default {
                 switch (chave) {
                   case 'produto_nome':
                     this.setNotificacoes(valor[0], 'Campo de nome do produto', 'erro')
+                    break
+                  case 'produto_estoque':
+                    this.setNotificacoes(valor[0], 'Campo de estoque do produto', 'erro')
+                    break
+                  case 'produto_preco':
+                    this.setNotificacoes(valor[0], 'Campo de preço do produto', 'erro')
+                    break
+                  case 'grupo_produto_id':
+                    this.setNotificacoes(valor[0], 'Campo de grupo do produto', 'erro')
+                    break
+                  case 'sub_grupo_produto_id':
+                    this.setNotificacoes(valor[0], 'Campo de subgrupo do produto', 'erro')
+                    break
+                  case 'fabricante_produto_id':
+                    this.setNotificacoes(valor[0], 'Campo de fabricante do produto', 'erro')
+                    break
+                  case 'classe_produto_id':
+                    this.setNotificacoes(valor[0], 'Campo de classe do produto', 'erro')
+                    break
+                  case 'unidade_id':
+                    this.setNotificacoes(valor[0], 'Campo de unidade do produto', 'erro')
                     break
                   default:
                     this.setNotificacoes(
@@ -233,17 +302,11 @@ export default {
           )
         },
         produto_preco: {
-          required: helpers.withMessage(
-            'Esse campo é obrigatório, por favor, informe-o.',
-            required
-          )
+          required: helpers.withMessage('Esse campo é obrigatório, por favor, informe-o.', required)
         },
         produto_estoque: {
-          required: helpers.withMessage(
-            'Esse campo é obrigatório, por favor, informe-o.',
-            required
-          )
-        },
+          required: helpers.withMessage('Esse campo é obrigatório, por favor, informe-o.', required)
+        }
       }
     }
   }
