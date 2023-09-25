@@ -21,6 +21,7 @@ import CadastroUnidadeView from "../views/Estoque/Unidade/CadastroUnidadeView.vu
 import EdicaoUnidadeView from "../views/Estoque/Unidade/EdicaoUnidadeView.vue"
 import ListagemProdutoView from "../views/Estoque/Produto/ListagemProdutoView.vue"
 import CadastroProdutoView from "../views/Estoque/Produto/CadastroProdutoView.vue"
+import EdicaoProdutoView from "../views/Estoque/Produto/EdicaoProdutoView.vue"
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -167,7 +168,7 @@ const router = createRouter({
             {
               path: 'edicao/:id',
               name: 'produto.edicao',
-              component: 'EdicaoProdutoView'
+              component: EdicaoProdutoView
             }
           ]
         },
