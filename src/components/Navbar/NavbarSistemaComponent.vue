@@ -1,5 +1,5 @@
 <template>
-  <v-navigation-drawer width="320" class="bg-blue-darken-2 nav">
+  <v-navigation-drawer expand-on-hover rail v-model="drawer" class="bg-blue-darken-2 nav">
     <v-list>
       <v-list-item
         v-for="(menu, index) in menus"
@@ -26,14 +26,15 @@
           <router-link :to="subitem.url">{{ subitem.label }}</router-link>
         </v-list-item>
       </v-list-group>
+      <v-list-item prepend-icon="fas fa-sign-out-alt" class="bg-red" @click="logout">
+        Sair
+      </v-list-item>
     </v-list>
-
-    <template v-slot:append>
-      <div class="pa-2">
-        <v-btn block class="bg-red" @click="logout"> Sair </v-btn>
-      </div>
-    </template>
   </v-navigation-drawer>
+  <v-app-bar class="pl-6" app>
+    <v-app-bar-nav-icon @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
+    <v-app-bar-title>{{ $route.meta.literalName }}</v-app-bar-title>
+  </v-app-bar>
 </template>
 
 <script>
@@ -56,6 +57,11 @@ export default {
       sessionStorage.removeItem('token')
       sessionStorage.removeItem('usuario')
       this.$router.push({ path: '/' })
+    }
+  },
+  data() {
+    return {
+      drawer: true
     }
   }
 }

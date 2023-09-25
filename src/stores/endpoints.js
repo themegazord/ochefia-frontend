@@ -53,12 +53,21 @@ export const useEndpoints = defineStore('endpoints', {
         consulta: `${servidor}/api/v1/unidade/unidade/`,
         edicao: `${servidor}/api/v1/unidade/unidade/`,
         remocao: `${servidor}/api/v1/unidade/unidade/`,
+      },
+      produto: {
+        listagem: `${servidor}/api/v1/produto/listagem/`,
+        cadastro: `${servidor}/api/v1/produto/cadastro`,
+        consulta: `${servidor}/api/v1/produto/consulta/`,
+        edicao: `${servidor}/api/v1/produto/edicao/`,
+        remocao: `${servidor}/api/v1/produto/remocao/`,
       }
     },
-    token: `Bearer ${localStorage.getItem('token') || sessionStorage.getItem('token')}`
+    token: `Bearer ${localStorage.getItem('token') || sessionStorage.getItem('token')}`,
+    empresaToken: localStorage.getItem('empresa_token') || sessionStorage.getItem('empresa_token')
   }),
   getters: {
     getToken: (state) => state.token,
+    getEmpresaToken: (state) => state.empresaToken,
     getAutenticacaoLogin: (state) => state.autenticacao.login,
     getCadastroCliente: (state) => state.cliente.cadastro,
     getCadastroEmpresa: (state) => state.empresa.cadastro,
@@ -88,5 +97,10 @@ export const useEndpoints = defineStore('endpoints', {
     getConsultaUnidadeProduto: (state) => state.estoque.unidade.consulta,
     getEdicaoUnidadeProduto: (state) => state.estoque.unidade.edicao,
     getRemocaoUnidadeProduto: (state) => state.estoque.unidade.remocao,
+    getListagemProduto: (state) => state.estoque.produto.listagem,
+    getCadastroProduto: (state) => state.estoque.produto.cadastro,
+    getConsultaProduto: (state) => state.estoque.produto.consulta,
+    getEdicaoProduto: (state) => state.estoque.produto.edicao,
+    getRemocaoProduto: (state) => state.estoque.produto.remocao,
   }
 })

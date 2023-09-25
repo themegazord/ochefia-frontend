@@ -9,10 +9,12 @@
         :width="10"
         indeterminate>
         </v-progress-circular>
+        <h3>{{ info }}</h3>
     </v-dialog>
 </template>
 
 <script>
+import { useInfoLoading } from '../../stores/infoLoading';
 export default {
     props: {
         loading: {
@@ -24,6 +26,10 @@ export default {
         mostraModal() {
             return this.loading
         }
+    },
+    setup() {
+        const info = useInfoLoading().getInfo
+        return { info }
     }
 }
 </script>

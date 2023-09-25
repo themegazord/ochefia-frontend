@@ -4,12 +4,12 @@
     <NotificacaoComponent />
     <LoadingComponent :loading="loading" />
     <v-main>
-      <div class="container-listagem-subgrupo">
+      <div class="container-listagem-produto">
         <h2>
-          Aqui, você vai ver seus grupos cadastrados e poderá editá-los, excluí-los ou criar novos
-          sub grupos.
+          Aqui, você vai ver seus produtos cadastrados e poderá editá-los, excluí-los ou criar
+          novos produtos.
         </h2>
-        <div class="container-cadastro-subgrupo">
+        <div class="container-cadastro-produto">
           <v-btn
             prepend-icon="fas fa-plus"
             class="criar"
@@ -22,26 +22,30 @@
           density="compact"
           fixed-header
           height="400"
-          v-if="subgrupos.length != 0"
-          class="tabela-subgrupos"
+          v-if="produtos.length != 0"
+          class="tabela-produtos"
         >
           <thead>
             <tr>
               <th class="text-left">ID</th>
               <th class="text-left">Nome</th>
+              <th class="text-left">Estoque</th>
+              <th class="text-left">Preço de Venda</th>
               <th class="text-left">Ações</th>
             </tr>
           </thead>
           <tbody>
-            <tr v-for="subgrupo in subgrupos" :key="subgrupo.sub_grupo_produto_id">
-              <td>{{ subgrupo.sub_grupo_produto_id }}</td>
-              <td>{{ subgrupo.sub_grupo_produto_nome }}</td>
+            <tr v-for="produto in produtos" :key="produto.produto_id">
+              <td>{{ produto.produto_id }}</td>
+              <td>{{ produto.produto_nome }}</td>
+              <td>{{ produto.produto_estoque }}</td>
+              <td>R$ {{ produto.produto_preco }}</td>
               <td class="acoes">
                 <v-btn
                   density="compact"
                   icon="fas fa-magic"
                   variant="flat"
-                  @click="$router.push({ path: `edicao/${subgrupo.sub_grupo_produto_id}` })"
+                  @click="$router.push({ path: `edicao/${produto.produto_id}` })"
                 ></v-btn>
                 <v-dialog width="500">
                   <template v-slot:activator="{ props }">
@@ -54,14 +58,19 @@
                   </template>
 
                   <template v-slot:default="{ isActive }">
-                    <v-card title="Remoção de grupo de produto">
-                      <v-card-text> Você deseja remover este grupo de produto? </v-card-text>
+                    <v-card title="Remoção da produto de medida do produto">
+                      <v-card-text> Você deseja remover este produto? </v-card-text>
                       <v-card-actions>
                         <v-spacer></v-spacer>
-                        <v-btn text="Cancelar" @click="isActive.value = false" color="var(--green-confirm)" variant="tonal"></v-btn>
+                        <v-btn
+                          text="Cancelar"
+                          @click="isActive.value = false"
+                          color="var(--green-confirm)"
+                          variant="tonal"
+                        ></v-btn>
                         <v-btn
                           text="Remover"
-                          @click="remocao(subgrupo.sub_grupo_produto_id)"
+                          @click="remocao(produto.produto_id)"
                           variant="tonal"
                           prepend-icon="fas fa-trash"
                           :disabled="removido"
@@ -76,7 +85,7 @@
           </tbody>
         </v-table>
       </div>
-      <h2 class="sem-grupos" v-if="subgrupos.length == 0">Sem subgrupos cadastrados</h2>
+      <h2 class="sem-grupos" v-if="produtos.length == 0">Sem produtos cadastrados</h2>
     </v-main>
   </v-layout>
 </template>
@@ -102,25 +111,25 @@ export default {
       subMenus: useNavbarSistemaLinksStore().subMenus,
       loading: false,
       removido: false,
-      subgrupos: []
+      produtos: []
     }
   },
   mounted() {
     this.loading = true
     axios
-      .get(useEndpoints().getListagemSubGrupoProduto, {
+      .get(`${useEndpoints().getListagemProduto}${useEndpoints().getEmpresaToken}`, {
         headers: {
           Authorization: useEndpoints().getToken
         }
       })
       .then((res) => {
-        this.subgrupos = res.data.subgrupos
+        this.produtos = res.data.produtos
         this.loading = false
       })
       .catch((err) => {
         if (err.data.response.error) {
           this.setNotificacoes(
-            `Erro interno listagem de subgrupos => ${err.data.response.error}`,
+            `Erro interno listagem de produtos => ${err.data.response.error}`,
             'Erro',
             'erro'
           )
@@ -133,27 +142,27 @@ export default {
     remocao(id) {
       this.loading = true
       axios
-        .delete(`${useEndpoints().getRemocaoSubGrupoProduto}${id}`, {
+        .delete(`${useEndpoints().getRemocaoProduto}${useEndpoints().getEmpresaToken}/${id}`, {
           headers: {
             Accept: 'application/json',
             Authorization: useEndpoints().getToken
           }
         })
         .then((res) => {
-          this.loading = false
           if (res.status == 204) {
-            this.setNotificacoes('Sub grupo deletado com sucesso', 'Sucesso', 'sucesso')
+            this.setNotificacoes('Produto removido com sucesso', 'Sucesso', 'sucesso')
             this.removido = true
+            this.loading = false
             setTimeout(() => {
               this.$router.go()
             }, 3000)
           }
         })
         .catch((err) => {
-          this.loading = false
           if (err.response.data.erro) {
             this.setNotificacoes(err.response.data.erro, 'Erro', 'erro')
           }
+          this.loading = false
         })
     }
   }
@@ -161,13 +170,13 @@ export default {
 </script>
 
 <style scoped>
-.container-listagem-subgrupo {
+.container-listagem-produto {
   padding: 4rem;
   font-family: 'Poppins', sans-serif;
   width: 90%;
 }
 
-.container-cadastro-subgrupo {
+.container-cadastro-produto {
   display: flex;
   justify-content: end;
   padding: 3rem 0;

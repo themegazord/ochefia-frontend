@@ -46,7 +46,7 @@ export const useNavbarSistemaLinksStore = defineStore('linksSistema', {
         icon: 'fas fa-cubes',
         subitens: {
           produtos: {
-            url: '/estoque/produtos',
+            url: '/estoque/produto/listagem',
             label: 'Produtos',
             icon: ''
           },
