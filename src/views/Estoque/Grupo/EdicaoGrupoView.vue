@@ -2,7 +2,6 @@
   <v-layout>
     <NavbarSistemaComponent :menus="menus" :subMenus="subMenus" />
     <NotificacaoComponent />
-    <v-app-bar class="pl-6">Estoque</v-app-bar>
     <LoadingComponent :loading="loading" />
     <v-main>
       <div class="container-cadastro-grupo">

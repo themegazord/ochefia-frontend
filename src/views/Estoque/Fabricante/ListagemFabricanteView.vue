@@ -3,7 +3,6 @@
     <NavbarSistemaComponent :menus="menus" :subMenus="subMenus" />
     <NotificacaoComponent />
     <LoadingComponent :loading="loading" />
-    <v-app-bar class="pl-6">Estoque</v-app-bar>
     <v-main>
       <div class="container-listagem-fabricante">
         <h2>
