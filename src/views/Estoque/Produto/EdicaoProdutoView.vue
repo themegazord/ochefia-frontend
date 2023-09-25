@@ -264,9 +264,17 @@ export default {
         this.loading = true
         axios
           .put(
-            `${useEndpoints().getEdicaoprodutoProduto}${this.produto.produto_id}`,
+            `${useEndpoints().getEdicaoProduto}${useEndpoints().getEmpresaToken}/${this.produto.produto_id}`,
             {
-              produto_nome: this.produto.produto_nome
+              produto_nome: this.produto.produto_nome,
+              produto_estoque: this.produto.produto_estoque,
+              produto_preco: this.produto.produto_preco,
+              empresa_id: this.produto.empresa_id,
+              grupo_produto_id: this.produto.grupo_produto_id,
+              sub_grupo_produto_id: this.produto.sub_grupo_produto_id,
+              fabricante_produto_id: this.produto.fabricante_produto_id,
+              classe_produto_id: this.produto.classe_produto_id,
+              unidade_id: this.produto.unidade_id,
             },
             {
               headers: {
@@ -291,9 +299,30 @@ export default {
                   case 'produto_nome':
                     this.setNotificacoes(valor[0], 'Campo de nome do produto', 'erro')
                     break
+                  case 'produto_estoque':
+                    this.setNotificacoes(valor[0], 'Campo de estoque do produto', 'erro')
+                    break
+                  case 'produto_preco':
+                    this.setNotificacoes(valor[0], 'Campo de preço do produto', 'erro')
+                    break
+                  case 'grupo_produto_id':
+                    this.setNotificacoes(valor[0], 'Campo de grupo do produto', 'erro')
+                    break
+                  case 'sub_grupo_produto_id':
+                    this.setNotificacoes(valor[0], 'Campo de subgrupo do produto', 'erro')
+                    break
+                  case 'fabricante_produto_id':
+                    this.setNotificacoes(valor[0], 'Campo de fabricante do produto', 'erro')
+                    break
+                  case 'classe_produto_id':
+                    this.setNotificacoes(valor[0], 'Campo de classe do produto', 'erro')
+                    break
+                  case 'unidade_id':
+                    this.setNotificacoes(valor[0], 'Campo de unidade do produto', 'erro')
+                    break
                   default:
                     this.setNotificacoes(
-                      'Entre em contato com o suporte EdicaoprodutoView|Cadastroproduto',
+                      'Entre em contato com o suporte CadastroprodutoView|Cadastroproduto',
                       'Erro interno',
                       'erro'
                     )
