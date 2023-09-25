@@ -142,7 +142,7 @@ export default {
     remocao(id) {
       this.loading = true
       axios
-        .delete(`${useEndpoints().getRemocaoprodutoProduto}${id}`, {
+        .delete(`${useEndpoints().getRemocaoProduto}${useEndpoints().getEmpresaToken}/${id}`, {
           headers: {
             Accept: 'application/json',
             Authorization: useEndpoints().getToken
@@ -150,7 +150,7 @@ export default {
         })
         .then((res) => {
           if (res.status == 204) {
-            this.setNotificacoes('produto de medida removida com sucesso', 'Sucesso', 'sucesso')
+            this.setNotificacoes('Produto removido com sucesso', 'Sucesso', 'sucesso')
             this.removido = true
             this.loading = false
             setTimeout(() => {
