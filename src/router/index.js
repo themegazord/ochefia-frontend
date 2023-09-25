@@ -43,7 +43,7 @@ const router = createRouter({
     {
       path: '/dashboard',
       name: 'dashboard',
-      meta: { requiresAuth: true },
+      meta: { requiresAuth: true, literalName: 'Dashboard' },
       component: DashboardView
     },
     {
