@@ -22,6 +22,7 @@ import EdicaoUnidadeView from "../views/Estoque/Unidade/EdicaoUnidadeView.vue"
 import ListagemProdutoView from "../views/Estoque/Produto/ListagemProdutoView.vue"
 import CadastroProdutoView from "../views/Estoque/Produto/CadastroProdutoView.vue"
 import EdicaoProdutoView from "../views/Estoque/Produto/EdicaoProdutoView.vue"
+import ListagemPrazoPgtoView from "../views/Financeiro/PrazoPgto/ListagemPrazoPgtoView.vue"
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -172,6 +173,24 @@ const router = createRouter({
             }
           ]
         },
+      ]
+    },
+    {
+      path: '/financeiro',
+      name: 'financeiro',
+      meta: { requiresAuth: true, literalName: 'Financeiro'},
+      children: [
+        {
+          path: 'prazopgto',
+          name: 'financeiro.prazopgto',
+          children: [
+            {
+              path: 'listagem',
+              name: 'financeiro.prazopgto.listagem',
+              component: ListagemPrazoPgtoView
+            }
+          ]
+        }
       ]
     }
   ]

@@ -1,0 +1,191 @@
+<template>
+  <v-layout>
+    <NavbarSistemaComponent :menus="menus" :subMenus="subMenus" />
+    <NotificacaoComponent />
+    <LoadingComponent :loading="loading" />
+    <v-main>
+      <div class="container-listagem-prazopgto">
+        <h2>
+          Aqui, você vai ver seus prazos de pagamento cadastrados e poderá editá-los, excluí-los ou criar
+          novos prazos de pagamento.
+        </h2>
+        <div class="container-cadastro-prazopgto">
+          <v-btn
+            prepend-icon="fas fa-plus"
+            class="criar"
+            variant="tonal"
+            @click="$router.push({ path: 'cadastro' })"
+            >Criar</v-btn
+          >
+        </div>
+        <v-table
+          density="compact"
+          fixed-header
+          height="400"
+          v-if="prazopgtos.length != 0"
+          class="tabela-prazopgtos"
+        >
+          <thead>
+            <tr>
+              <th class="text-left">ID</th>
+              <th class="text-left">Nome</th>
+              <th class="text-left">Tipo</th>
+              <th class="text-left">Ações</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr v-for="prazopgto in prazopgtos" :key="prazopgto.prazopgto_id">
+              <td>{{ prazopgto.prazopgto_id }}</td>
+              <td>{{ prazopgto.prazopgto_nome }}</td>
+              <td><v-chip :color="prazopgto.prazopgto_tipo == 'A Vista' ? 'green' : prazopgto.prazopgto_tipo == 'A Prazo' ? 'blue' : 'red'">{{ prazopgto.prazopgto_tipo }}</v-chip></td>
+              <td class="acoes">
+                <v-btn
+                  density="compact"
+                  icon="fas fa-magic"
+                  variant="flat"
+                  @click="$router.push({ path: `edicao/${prazopgto.prazopgto_id}` })"
+                ></v-btn>
+                <v-dialog width="500">
+                  <template v-slot:activator="{ props }">
+                    <v-btn
+                      density="compact"
+                      icon="fas fa-trash"
+                      variant="flat"
+                      v-bind="props"
+                    ></v-btn>
+                  </template>
+
+                  <template v-slot:default="{ isActive }">
+                    <v-card title="Remoção da prazopgto de medida do prazopgto">
+                      <v-card-text> Você deseja remover este prazopgto? </v-card-text>
+                      <v-card-actions>
+                        <v-spacer></v-spacer>
+                        <v-btn
+                          text="Cancelar"
+                          @click="isActive.value = false"
+                          color="var(--green-confirm)"
+                          variant="tonal"
+                        ></v-btn>
+                        <v-btn
+                          text="Remover"
+                          @click="remocao(prazopgto.prazopgto_id)"
+                          variant="tonal"
+                          prepend-icon="fas fa-trash"
+                          :disabled="removido"
+                          color="var(--vermilion)"
+                        ></v-btn>
+                      </v-card-actions>
+                    </v-card>
+                  </template>
+                </v-dialog>
+              </td>
+            </tr>
+          </tbody>
+        </v-table>
+      </div>
+      <h2 class="sem-grupos" v-if="prazopgtos.length == 0">Sem prazopgtos cadastrados</h2>
+    </v-main>
+  </v-layout>
+</template>
+
+<script>
+import axios from 'axios'
+import LoadingComponent from '../../../components/Geral/LoadingComponent.vue'
+import NotificacaoComponent from '../../../components/Geral/NotificacaoComponent.vue'
+import NavbarSistemaComponent from '../../../components/Navbar/NavbarSistemaComponent.vue'
+import { useNavbarSistemaLinksStore } from '../../../stores/navbarSistemaLinks'
+import { useEndpoints } from '../../../stores/endpoints'
+import { mapActions } from 'pinia'
+import { useNotificacoes } from '../../../stores/notificacao'
+export default {
+  components: {
+    LoadingComponent,
+    NotificacaoComponent,
+    NavbarSistemaComponent
+  },
+  data() {
+    return {
+      menus: useNavbarSistemaLinksStore().getMenus,
+      subMenus: useNavbarSistemaLinksStore().subMenus,
+      loading: false,
+      removido: false,
+      prazopgtos: []
+    }
+  },
+  mounted() {
+    this.loading = true
+    axios
+      .get(`${useEndpoints().getListagemPrazoPgto}${useEndpoints().getEmpresaToken}`, {
+        headers: {
+          Authorization: useEndpoints().getToken
+        }
+      })
+      .then((res) => {
+        this.prazopgtos = res.data.prazospgto
+        this.loading = false
+      })
+      .catch((err) => {
+        if (err.data.response.error) {
+          this.setNotificacoes(
+            `Erro interno listagem de prazopgtos => ${err.data.response.error}`,
+            'Erro',
+            'erro'
+          )
+          this.loading = false
+        }
+      })
+  },
+  methods: {
+    ...mapActions(useNotificacoes, ['setNotificacoes']),
+    remocao(id) {
+      this.loading = true
+      axios
+        .delete(`${useEndpoints().getRemocaoprazopgto}${useEndpoints().getEmpresaToken}/${id}`, {
+          headers: {
+            Accept: 'application/json',
+            Authorization: useEndpoints().getToken
+          }
+        })
+        .then((res) => {
+          if (res.status == 204) {
+            this.setNotificacoes('prazopgto removido com sucesso', 'Sucesso', 'sucesso')
+            this.removido = true
+            this.loading = false
+            setTimeout(() => {
+              this.$router.go()
+            }, 3000)
+          }
+        })
+        .catch((err) => {
+          if (err.response.data.erro) {
+            this.setNotificacoes(err.response.data.erro, 'Erro', 'erro')
+          }
+          this.loading = false
+        })
+    }
+  }
+}
+</script>
+
+<style scoped>
+.container-listagem-prazopgto {
+  padding: 4rem;
+  font-family: 'Poppins', sans-serif;
+  width: 90%;
+}
+
+.container-cadastro-prazopgto {
+  display: flex;
+  justify-content: end;
+  padding: 3rem 0;
+}
+
+.criar {
+  color: var(--green-confirm);
+}
+
+.acoes {
+  display: flex;
+  gap: 0.5rem;
+}
+</style>
