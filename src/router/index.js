@@ -24,6 +24,7 @@ import CadastroProdutoView from "../views/Estoque/Produto/CadastroProdutoView.vu
 import EdicaoProdutoView from "../views/Estoque/Produto/EdicaoProdutoView.vue"
 import ListagemPrazoPgtoView from "../views/Financeiro/PrazoPgto/ListagemPrazoPgtoView.vue"
 import CadastroPrazoPgtoView from "../views/Financeiro/PrazoPgto/CadastroPrazoPgtoView.vue"
+import EdicaoPrazoPgtoView from "../views/Financeiro/PrazoPgto/EdicaoPrazoPgtoView.vue"
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -195,6 +196,11 @@ const router = createRouter({
               name: 'financeiro.prazopgto.cadastro',
               component: CadastroPrazoPgtoView
             },
+            {
+              path: 'edicao/:id',
+              name: 'financeiro.prazopgto.edicao',
+              component: EdicaoPrazoPgtoView
+            }
           ]
         }
       ]
