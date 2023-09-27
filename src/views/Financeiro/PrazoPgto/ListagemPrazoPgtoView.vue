@@ -140,7 +140,7 @@ export default {
     remocao(id) {
       this.loading = true
       axios
-        .delete(`${useEndpoints().getRemocaoprazopgto}${useEndpoints().getEmpresaToken}/${id}`, {
+        .delete(`${useEndpoints().getRemocaoPrazoPgto}${useEndpoints().getEmpresaToken}/${id}`, {
           headers: {
             Accept: 'application/json',
             Authorization: useEndpoints().getToken
@@ -148,7 +148,7 @@ export default {
         })
         .then((res) => {
           if (res.status == 204) {
-            this.setNotificacoes('prazopgto removido com sucesso', 'Sucesso', 'sucesso')
+            this.setNotificacoes('Prazo de pagamento removido com sucesso', 'Sucesso', 'sucesso')
             this.removido = true
             this.loading = false
             setTimeout(() => {

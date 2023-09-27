@@ -68,6 +68,7 @@ export const useEndpoints = defineStore('endpoints', {
         cadastro: `${servidor}/api/v1/prazopgto/cadastro`,
         consulta: `${servidor}/api/v1/prazopgto/consulta/`,
         edicao: `${servidor}/api/v1/prazopgto/edicao/`,
+        remocao: `${servidor}/api/v1/prazopgto/remocao/`,
       },
       prazopgto_dias: {
         cadastro: `${servidor}/api/v1/prazopgtodias/cadastro`,
@@ -119,6 +120,7 @@ export const useEndpoints = defineStore('endpoints', {
     getCadastroPrazoPgto: (state) => state.financeiro.prazopgto.cadastro,
     getConsultaPrazoPgto: (state) => state.financeiro.prazopgto.consulta,
     getEdicaoPrazoPgto: (state) => state.financeiro.prazopgto.edicao,
+    getRemocaoPrazoPgto: (state) => state.financeiro.prazopgto.remocao,
     getCadastroPrazoPgtoDias: (state) => state.financeiro.prazopgto_dias.cadastro,
     getConsultaPrazoPgtoDias: (state) => state.financeiro.prazopgto_dias.consulta,
     getEdicaoPrazoPgtoDias: (state) => state.financeiro.prazopgto_dias.edicao,
