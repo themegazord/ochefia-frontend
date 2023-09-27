@@ -67,10 +67,12 @@ export const useEndpoints = defineStore('endpoints', {
         listagem: `${servidor}/api/v1/prazopgto/listagem/`,
         cadastro: `${servidor}/api/v1/prazopgto/cadastro`,
         consulta: `${servidor}/api/v1/prazopgto/consulta/`,
+        edicao: `${servidor}/api/v1/prazopgto/edicao/`,
       },
       prazopgto_dias: {
         cadastro: `${servidor}/api/v1/prazopgtodias/cadastro`,
-        consulta: `${servidor}/api/v1/prazopgtodias/consulta/`
+        consulta: `${servidor}/api/v1/prazopgtodias/consulta/`,
+        edicao: `${servidor}/api/v1/prazopgtodias/edicao/`,
       }
     },
     token: `Bearer ${localStorage.getItem('token') || sessionStorage.getItem('token')}`,
@@ -116,7 +118,9 @@ export const useEndpoints = defineStore('endpoints', {
     getListagemPrazoPgto: (state) => state.financeiro.prazopgto.listagem,
     getCadastroPrazoPgto: (state) => state.financeiro.prazopgto.cadastro,
     getConsultaPrazoPgto: (state) => state.financeiro.prazopgto.consulta,
+    getEdicaoPrazoPgto: (state) => state.financeiro.prazopgto.edicao,
     getCadastroPrazoPgtoDias: (state) => state.financeiro.prazopgto_dias.cadastro,
     getConsultaPrazoPgtoDias: (state) => state.financeiro.prazopgto_dias.consulta,
+    getEdicaoPrazoPgtoDias: (state) => state.financeiro.prazopgto_dias.edicao,
   }
 })

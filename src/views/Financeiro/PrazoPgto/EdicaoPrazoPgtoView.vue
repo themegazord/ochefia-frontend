@@ -232,8 +232,8 @@ export default {
       if (await this.v$.prazopgto.$validate()) {
         this.loading = true
         axios
-          .post(
-            useEndpoints().geteditarPrazoPgto,
+          .put(
+            `${useEndpoints().getEdicaoPrazoPgto}${useEndpoints().getEmpresaToken}/${this.prazopgto.prazopgto_id}`,
             {
               empresa_id: this.prazopgto.empresa_id,
               prazopgto_nome: this.prazopgto.prazopgto_nome,
@@ -252,13 +252,14 @@ export default {
               this.prazos.forEach((e) => {
                 this.parcelas.push({
                   empresa_id: this.prazopgto.empresa_id,
-                  prazopgto_id: res.data.prazopgto.id,
+                  prazopgto_id: this.prazopgto.prazopgto_id,
                   dias: parseInt(e)
                 })
+                console.log(this.parcelas)
               })
               axios
-                .post(
-                  useEndpoints().geteditarPrazoPgtoDias,
+                .put(
+                  `${useEndpoints().getEdicaoPrazoPgtoDias}${useEndpoints().getEmpresaToken}/${this.prazopgto.prazopgto_id}`,
                   {
                     parcelas: this.parcelas
                   },
@@ -286,13 +287,14 @@ export default {
                 })
             }
             this.setNotificacoes(
-              `${res.data.mensagem} -> ${res.data.prazopgto.prazopgto_nome}`,
+              `${res.data.mensagem}`,
               'Sucesso',
               'sucesso'
             )
             this.loading = false
           })
           .catch((err) => {
+            console.log(err)
             if (err.response.data.errors) {
               const erros = Object.entries(err.response.data.errors)
               for (const [chave, valor] of erros) {
