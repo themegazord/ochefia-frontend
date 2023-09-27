@@ -195,6 +195,7 @@ export default {
             if (this.prazos.length != 0) {
               this.prazos.forEach((e) => {
                 this.parcelas.push({
+                  empresa_id: this.prazopgto.empresa_id ,
                   prazopgto_id: res.data.prazopgto.id,
                   dias: parseInt(e)
                 })
