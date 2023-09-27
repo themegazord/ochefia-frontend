@@ -97,7 +97,7 @@ export const useNavbarSistemaLinksStore = defineStore('linksSistema', {
             icon: ''
           },
           prazoPgto: {
-            url: '/financeiro/prazopgto',
+            url: '/financeiro/prazopgto/listagem',
             label: 'Prazo de Pagamento',
             icon: ''
           }
